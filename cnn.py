@@ -257,8 +257,8 @@ for fold_num in range(5):
             tmp_training.append(patient_matrix[name])
 
         v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix)
-        np.savetxt("../result/cnn/v" + str(count), v_output)
-        np.savetxt("../result/cnn/t" + str(count), t_output)
+        np.savetxt("./result/cnn/v" + str(count), v_output)
+        np.savetxt("./result/cnn/t" + str(count), t_output)
 
         # v_output, t_output = cnn_LSTM(tmp_training, validation_matrix, test_matrix)
         # np.savetxt("../result/LSTM/v" + str(count), v_output)
