@@ -168,6 +168,9 @@ def random_forest(x_train, validation_set, test_set):
     y_train = np.concatenate((np.zeros(788) + 1, np.zeros(788)), axis=0)
     x_train = np.array(x_train)
 
+    print(x_train.shape)
+    print(y_train.shape)
+
     clf = RandomForestClassifier()
     clf.fit(x_train, y_train)
 
@@ -261,5 +264,5 @@ def main(method):
         count += 1
 
 
-main("cnn")
+# main("cnn")
 main("random_forest")
