@@ -33,13 +33,17 @@ def get_ranked_event(file_path):
 
 
 hae_events = get_ranked_event("./data/hae.csv")
-for event in hae_events[0:len(hae_events)/20]:
+non_hae_events = get_ranked_event("./data/nonhae_sorted.csv")
+
+events_length = len(hae_events) + len(non_hae_events)
+
+for event in hae_events[0:events_length/20]:
     event_code = event[0]
     if event_code not in selected_events:
         selected_events.append(event_code)
 
-non_hae_events = get_ranked_event("./data/nonhae_sorted.csv")
-for event in non_hae_events[0:len(non_hae_events)/20]:
+
+for event in non_hae_events[0:events_length/20]:
     event_code = event[0]
     if event_code not in selected_events:
         selected_events.append(event_code)
