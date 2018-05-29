@@ -59,21 +59,27 @@ def get_patient_features():
 
     patient_feature_after_extraction = dict()
 
-    with open("./data/combined") as f:
-        for line in f.readlines():
-            split = line.rstrip().split(",")
-            patient_id = split[0]
-            if patient_id not in patient_feature_after_extraction:
-                patient_feature_after_extraction[patient_id] = np.zeros((3767, 2038))
-            this_date = split[2]
-            year = int(float(this_date[0:4]))
-            month = int(float(this_date[4:6]))
-            day = int(float(this_date[6:8]))
-            num = date(year, month, day) - date(2010, 1, 1)
-            days_num = num.days
-            this_event = selected_events.index(split[1])
-            patient_feature_after_extraction[patient_id][this_event][days_num] += 1
-        f.close()
+    with open("./data/combined_filtered", "w") as w:
+        with open("./data/combined") as f:
+            for line in f.readlines():
+                split = line.rstrip().split(",")
+
+                if split[1] in selected_events:
+                    w.write(line)
+
+                # patient_id = split[0]
+                # if patient_id not in patient_feature_after_extraction:
+                #     patient_feature_after_extraction[patient_id] = np.zeros((3767, 2038))
+                # this_date = split[2]
+                # year = int(float(this_date[0:4]))
+                # month = int(float(this_date[4:6]))
+                # day = int(float(this_date[6:8]))
+                # num = date(year, month, day) - date(2010, 1, 1)
+                # days_num = num.days
+                # if split[1] in selected_events:
+                #     this_event = selected_events.index(split[1])
+                #     patient_feature_after_extraction[patient_id][this_event][days_num] += 1
+            f.close()
 
     return patient_feature_after_extraction
 
@@ -223,5 +229,6 @@ def main(method):
         count += 1
 
 
-main("cnn")
-main("random_forest")
+get_patient_features()
+# main("cnn")
+# main("random_forest")
