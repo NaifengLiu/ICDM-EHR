@@ -20,7 +20,7 @@ with open("./data/hae.csv") as f:
 
 for key in events.keys():
     print key
-    print events[key]
+    print np.sum(events[key])
     event_set.append([key, np.var(events[key])])
 
 event_set.sort(key=lambda x: x[1])
