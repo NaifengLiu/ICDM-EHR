@@ -5,9 +5,10 @@ from keras.layers import Conv2D, Conv1D, MaxPooling2D, MaxPooling1D
 import keras
 import numpy as np
 from gensim.models import word2vec
-import process_raw_data
+import random
 from tqdm import tqdm
 import grouping
+import process_raw_data
 
 # load w2v model
 embedding_model = word2vec.Word2Vec.load("./data/50features_1minwords_10context")
@@ -195,11 +196,10 @@ x_train_file_names_positive = []
 x_test_file_names_positive = []
 
 for i in range(len(matching_keys)):
-    if i not in missing:
-        if len(x_train_file_names_positive) < 985:
-            x_train_file_names_positive.append(matching_keys[i])
-        else:
-            x_test_file_names_positive.append((matching_keys[i]))
+    if len(x_train_file_names_positive) < 985:
+        x_train_file_names_positive.append(matching_keys[i])
+    else:
+        x_test_file_names_positive.append((matching_keys[i]))
 
 # edited
 x_train_file_names_negative = []
@@ -246,27 +246,17 @@ for fold_num in range(5):
     validation_matrix = np.array(validation_matrix)
     validation_matrix = validation_matrix.reshape(validation_matrix.shape[0], 292, 50, 1)
 
-    for time in tqdm(range(200)):
-        tmp_tmp_names_negative = tmp_training_names_negative[time * 788:(time + 1) * 788]
-        # then we make the matrix
-        print("preparing training matrix")
-        tmp_training = []
-        for name in tmp_training_names_positive:
-            tmp_training.append(patient_matrix[name])
-        for name in tmp_tmp_names_negative:
-            tmp_training.append(patient_matrix[name])
+    print("preparing training matrix")
+    tmp_training = []
+    for name in tmp_training_names_positive:
+        tmp_training.append(patient_matrix[name])
+    # for name in tmp_tmp_names_negative:
+    #     tmp_training.append(patient_matrix[name])
+    for name in tmp_training_names_positive:
+        tmp_training.append(patient_matrix[random.choice(matching[name])])
 
-        v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix)
-        np.savetxt("./result/v" + str(count), v_output)
-        np.savetxt("./result/t" + str(count), t_output)
+    v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix)
+    np.savetxt("./result/v" + str(count), v_output)
+    np.savetxt("./result/t" + str(count), t_output)
 
-        # v_output, t_output = cnn_LSTM(tmp_training, validation_matrix, test_matrix)
-        # np.savetxt("../result/LSTM/v" + str(count), v_output)
-        # np.savetxt("../result/LSTM/t" + str(count), t_output)
-        #
-        # v_output, t_output = NN(tmp_training, validation_matrix, test_matrix)
-        # np.savetxt("../result/NN/v" + str(count), v_output)
-        # np.savetxt("../result/NN/t" + str(count), t_output)
-
-
-        count += 1
+    count += 1
