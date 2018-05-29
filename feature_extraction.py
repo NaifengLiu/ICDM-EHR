@@ -23,7 +23,7 @@ for key in events.keys():
     print np.sum(events[key])
     event_set.append([key, np.var(events[key])])
 
-event_set.sort(key=lambda x: x[1])
+event_set.sort(key=lambda x: x[1], reverse=True)
 
 print event_set[0:1000]
 
