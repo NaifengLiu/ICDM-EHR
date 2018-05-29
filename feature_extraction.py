@@ -1,19 +1,24 @@
 from datetime import date
+import numpy as np
 
-d0 = date(2010, 1, 1)
-d1 = date(2015,07,31)
-delta = d1 - d0
-print delta.days
+events = dict()
 
-with open("./data/combined", "w") as w:
-    with open("./data/hae.csv") as f:
-        for line in f.readlines():
-            w.write(line)
-        f.close()
-    with open("./data/nonhae_sorted.csv") as f:
-        for line in f.readlines():
-            w.write(line)
-        f.close()
+with open("./data/combined") as f:
+    for line in f.readlines():
+        this_event = line.rstrip().split(",")[1]
+        this_date = line.rstrip().split(",")[2]
+        year = int(float(this_date[0:4]))
+        month = int(float(this_date[4:6]))
+        day = int(float(this_date[6:8]))
+
+        num = date(year, month, day) - date(2010, 1, 1)
+
+        if this_event not in events:
+            events[this_event] = np.zeros(2038)
+        events[this_event][num] += 1
+
+print events
+
 
 
 
