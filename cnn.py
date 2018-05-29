@@ -261,5 +261,5 @@ def main(method):
         count += 1
 
 
-# main("cnn")
+main("cnn")
 main("random_forest")
