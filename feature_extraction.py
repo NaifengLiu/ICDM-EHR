@@ -2,8 +2,9 @@ from datetime import date
 import numpy as np
 
 events = dict()
+event_set = []
 
-with open("./data/combined") as f:
+with open("./data/hae.csv") as f:
     for line in f.readlines():
         this_event = line.rstrip().split(",")[1]
         this_date = line.rstrip().split(",")[2]
@@ -17,7 +18,13 @@ with open("./data/combined") as f:
             events[this_event] = np.zeros(2038)
         events[this_event][num.days] += 1
 
-print events
+for key in events.keys():
+    event_set.append([key, np.var(events[key])])
+
+event_set.sort(key=lambda x: x[1])
+
+print event_set[0:10]
+
 
 
 
