@@ -171,8 +171,13 @@ def random_forest(x_train, validation_set, test_set):
     print(x_train.shape)
     print(y_train.shape)
 
+    nsamples, nx, ny, nz = x_train.shape
+    x_train_reshape = x_train.reshape((nsamples, nx * ny * nz))
+
+    print(x_train_reshape.shape)
+
     clf = RandomForestClassifier()
-    clf.fit(x_train, y_train)
+    clf.fit(x_train_reshape, y_train)
 
     validation_output = clf.predict(validation_set)
     test_output = clf.predict(test_set)
