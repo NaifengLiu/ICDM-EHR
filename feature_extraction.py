@@ -19,6 +19,8 @@ with open("./data/hae.csv") as f:
         events[this_event][num.days] += 1
 
 for key in events.keys():
+    print key
+    print events[key]
     event_set.append([key, np.var(events[key])])
 
 event_set.sort(key=lambda x: x[1])
