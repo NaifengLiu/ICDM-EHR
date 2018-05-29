@@ -25,7 +25,7 @@ for key in events.keys():
 
 event_set.sort(key=lambda x: x[1])
 
-print event_set[0:100]
+print event_set[0:1000]
 
 
 
