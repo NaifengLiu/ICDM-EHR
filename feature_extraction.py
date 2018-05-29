@@ -36,12 +36,12 @@ hae_events = get_ranked_event("./data/hae.csv")
 non_hae_events = get_ranked_event("./data/nonhae_sorted.csv")
 
 events_length = len(hae_events) + len(non_hae_events)
+print events_length
 
 for event in hae_events[0:events_length/20]:
     event_code = event[0]
     if event_code not in selected_events:
         selected_events.append(event_code)
-
 
 for event in non_hae_events[0:events_length/20]:
     event_code = event[0]
