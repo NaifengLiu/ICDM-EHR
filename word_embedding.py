@@ -191,12 +191,6 @@ def random_forest(x_train, validation_set, test_set):
 
 
 def main(method):
-    # now we have 985/197000 training set
-    # so every time we pop 197/39400 as cross validation set
-    # then we use the rest 788/157600 as per fold training
-    # in per fold, we use this 788 as positive and randomly pick 788 from 157600 to train a model
-    # so, we can train 200 times, then we combine the model, evaluate the validation set and test set
-    # later we add up 5 fold's result, so we will have 2 matrix, for validation and test set
 
     print("start pre-processing")
 
