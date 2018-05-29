@@ -17,7 +17,7 @@ with open("./data/combined") as f:
 
         if this_event not in events:
             events[this_event] = np.zeros(2038)
-        events[this_event][num] += 1
+        events[this_event][num.days] += 1
 
 print events
 
