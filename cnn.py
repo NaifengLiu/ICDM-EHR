@@ -196,10 +196,11 @@ x_train_file_names_positive = []
 x_test_file_names_positive = []
 
 for i in range(len(matching_keys)):
-    if len(x_train_file_names_positive) < 985:
-        x_train_file_names_positive.append(matching_keys[i])
-    else:
-        x_test_file_names_positive.append((matching_keys[i]))
+    if i not in missing:
+        if len(x_train_file_names_positive) < 985:
+            x_train_file_names_positive.append(matching_keys[i])
+        else:
+            x_test_file_names_positive.append((matching_keys[i]))
 
 # edited
 x_train_file_names_negative = []
