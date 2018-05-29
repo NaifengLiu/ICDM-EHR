@@ -13,8 +13,6 @@ with open("./data/combined") as f:
 
         num = date(year, month, day) - date(2010, 1, 1)
 
-        print num
-
         if this_event not in events:
             events[this_event] = np.zeros(2038)
         events[this_event][num.days] += 1
