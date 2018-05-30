@@ -39,24 +39,23 @@ def get_ranked_event(file_path):
     return event_set
 
 
-hae_events = get_ranked_event("./data/hae.csv")
-non_hae_events = get_ranked_event("./data/nonhae_sorted.csv")
+# hae_events = get_ranked_event("./data/hae.csv")
+# non_hae_events = get_ranked_event("./data/nonhae_sorted.csv")
+#
+# for event in hae_events[0:2901]:
+#     event_code = event[0]
+#     if event_code not in selected_events:
+#         selected_events.append(event_code)
+#
+# for event in non_hae_events[0:2901]:
+#     event_code = event[0]
+#     if event_code not in selected_events:
+#         selected_events.append(event_code)
+#
+# print len(selected_events)
 
-for event in hae_events[0:2901]:
-    event_code = event[0]
-    if event_code not in selected_events:
-        selected_events.append(event_code)
-
-for event in non_hae_events[0:2901]:
-    event_code = event[0]
-    if event_code not in selected_events:
-        selected_events.append(event_code)
-
-print len(selected_events)
-
-with open("./data/selected_events", "w") as w:
-    w.write(",".join(selected_events))
-    w.close()
+with open("./data/selected_events") as f:
+    selected_events = f.readline().split(",")
 
 patient_feature_after_extraction = dict()
 
@@ -78,7 +77,6 @@ def get_patient_features():
             this_event = selected_events.index(split[1])
             patient_feature_after_extraction[patient_id][this_event][days_num] += 1
         f.close()
-
 
 
 def random_forest(x_train, validation_set, test_set):
@@ -179,7 +177,9 @@ def main(method):
             x_test_file_names_negative.append(matching[item][i])
     # edited
 
-    patient_matrix = get_patient_features()
+    get_patient_features()
+
+    patient_matrix = patient_feature_after_extraction
 
     test_matrix = []
     for name in x_test_file_names_positive:
