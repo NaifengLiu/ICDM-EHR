@@ -39,19 +39,19 @@ def get_ranked_event(file_path):
     return event_set
 
 
-people_1 = []
-people_2 = []
-with open("./data/combined") as f:
-    for line in f.readlines():
-        split = line.split(",")
-        people_1.append(split[0])
-with open("./data/combined_filtered") as f:
-    for line in f.readlines():
-        split = line.split(",")
-        people_2.append(split[0])
-people_1 = list(set(people_1))
-people_2 = list(set(people_2))
-invalid_people = [x for x in people_1 not in people_2]
+# people_1 = []
+# people_2 = []
+# with open("./data/combined") as f:
+#     for line in f.readlines():
+#         split = line.split(",")
+#         people_1.append(split[0])
+# with open("./data/combined_filtered") as f:
+#     for line in f.readlines():
+#         split = line.split(",")
+#         people_2.append(split[0])
+# people_1 = list(set(people_1))
+# people_2 = list(set(people_2))
+# invalid_people = [x for x in people_1 not in people_2]
 
 
 # hae_events = get_ranked_event("./data/hae.csv")
