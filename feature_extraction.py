@@ -202,6 +202,7 @@ def main(method):
         if name in patient_matrix:
             test_matrix.append(patient_matrix[name])
             print patient_matrix[name].shape
+        print patient_matrix[name].shape
     for name in x_test_file_names_negative:
         # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
         test_matrix.append(patient_matrix[name])
