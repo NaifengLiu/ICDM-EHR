@@ -54,10 +54,14 @@ for event in non_hae_events[0:2901]:
 
 print len(selected_events)
 
+with open("./data/selected_events", "w") as w:
+    w.write(",".join(selected_events))
+    w.close()
+
+patient_feature_after_extraction = dict()
+
 
 def get_patient_features():
-
-    patient_feature_after_extraction = dict()
 
     with open("./data/combined_filtered") as f:
         for line in f.readlines():
@@ -75,7 +79,6 @@ def get_patient_features():
             patient_feature_after_extraction[patient_id][this_event][days_num] += 1
         f.close()
 
-    return patient_feature_after_extraction
 
 
 def random_forest(x_train, validation_set, test_set):
@@ -104,7 +107,7 @@ def random_forest(x_train, validation_set, test_set):
     return validation_output, test_output
 
 
-def cnn(x_train, validation_set, test_set, batch_size=32, epochs=7, num_classes=2, input_shape=(292, 50, 1)):
+def cnn(x_train, validation_set, test_set, batch_size=32, epochs=7, num_classes=2, input_shape=(3767, 2038, 1)):
     x_train = np.array(x_train)
     x_train = x_train.reshape(x_train.shape[0], 292, 50, 1)
     y_train = np.concatenate((np.zeros(788) + 1, np.zeros(788)), axis=0)
@@ -186,7 +189,7 @@ def main(method):
         # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
         test_matrix.append(patient_matrix[name])
     test_matrix = np.array(test_matrix)
-    test_matrix = test_matrix.reshape(test_matrix.shape[0], 292, 50, 1)
+    test_matrix = test_matrix.reshape(test_matrix.shape[0], 3767, 2038, 1)
 
     count = 0
     for fold_num in range(5):
@@ -203,7 +206,7 @@ def main(method):
         for name in tmp_validation_names_negative:
             validation_matrix.append(patient_matrix[name])
         validation_matrix = np.array(validation_matrix)
-        validation_matrix = validation_matrix.reshape(validation_matrix.shape[0], 292, 50, 1)
+        validation_matrix = validation_matrix.reshape(validation_matrix.shape[0], 3767, 2038, 1)
 
         print("preparing training matrix")
         tmp_training = []
