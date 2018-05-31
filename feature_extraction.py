@@ -39,19 +39,21 @@ def get_ranked_event(file_path):
     return event_set
 
 
-# people_1 = []
-# people_2 = []
-# with open("./data/combined") as f:
-#     for line in f.readlines():
-#         split = line.split(",")
-#         people_1.append(split[0])
-# with open("./data/combined_filtered") as f:
-#     for line in f.readlines():
-#         split = line.split(",")
-#         people_2.append(split[0])
-# people_1 = list(set(people_1))
-# people_2 = list(set(people_2))
-# invalid_people = [x for x in people_1 not in people_2]
+people_1 = []
+people_2 = []
+with open("./data/combined") as f:
+    for line in f.readlines():
+        split = line.split(",")
+        people_1.append(split[0])
+with open("./data/combined_filtered") as f:
+    for line in f.readlines():
+        split = line.split(",")
+        people_2.append(split[0])
+people_1 = list(set(people_1))
+people_2 = list(set(people_2))
+invalid_people = [x for x in people_1 not in people_2]
+print invalid_people
+print len(invalid_people)
 
 
 # hae_events = get_ranked_event("./data/hae.csv")
@@ -178,20 +180,12 @@ def main(method):
 
     for i in range(len(matching_keys)):
         if i not in missing:
+
             if len(x_train_file_names_positive) < 985:
                 x_train_file_names_positive.append(matching_keys[i])
             else:
                 x_test_file_names_positive.append((matching_keys[i]))
 
-    a = 0
-    b = 0
-
-    for item in patient_feature_after_extraction.keys():
-        if item in matching_keys:
-            a += 1
-        else:
-            b += 1
-    print a, b
 
     # edited
     x_train_file_names_negative = []
@@ -210,14 +204,15 @@ def main(method):
     for name in x_test_file_names_positive:
         # test_matrix.append(np.loadtxt("./data/x_test_positive/" + name))
         if name in patient_matrix:
-            print patient_matrix[name].shape
-            print patient_feature_after_extraction[name].shape
+            # print patient_matrix[name].shape
+            # print patient_feature_after_extraction[name].shape
             test_matrix.append(patient_matrix[name])
 
             print patient_matrix[name].shape
     for name in x_test_file_names_negative:
         # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
-        test_matrix.append(patient_matrix[name])
+        if name in patient_matrix:
+            test_matrix.append(patient_matrix[name])
     test_matrix = np.array(test_matrix)
     test_matrix = test_matrix.reshape(test_matrix.shape[0], 3767, 2038, 1)
 
