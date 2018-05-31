@@ -80,7 +80,7 @@ def get_patient_features():
     with open("./data/combined_filtered") as f:
         for line in f.readlines():
             split = line.rstrip().split(",")
-            patient_id = split[0]
+            patient_id = int(float(split[0]))
             if patient_id not in patient_feature_after_extraction:
                 patient_feature_after_extraction[patient_id] = np.zeros((3767, 2038))
             this_date = split[2]
@@ -175,9 +175,6 @@ def main(method):
 
     x_train_file_names_positive = []
     x_test_file_names_positive = []
-
-    print patient_feature_after_extraction.keys()[0:10]
-    print matching_keys[0:10]
 
     for i in range(len(matching_keys)):
         if i not in missing:
