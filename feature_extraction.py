@@ -51,8 +51,11 @@ with open("./data/combined_filtered") as f:
         people_2.append(split[0])
 people_1 = list(set(people_1))
 people_2 = list(set(people_2))
-invalid_people = [x for x in people_1 not in people_2]
+
+invalid_people = list(set(people_1) - set(people_2))
 print invalid_people
+print len(people_1)
+print len(people_2)
 print len(invalid_people)
 
 
