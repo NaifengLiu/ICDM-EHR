@@ -204,7 +204,7 @@ def main(method):
             print patient_feature_after_extraction[name].shape
             test_matrix.append(patient_matrix[name])
 
-        print patient_matrix[name].shape
+            print patient_matrix[name].shape
     for name in x_test_file_names_negative:
         # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
         test_matrix.append(patient_matrix[name])
