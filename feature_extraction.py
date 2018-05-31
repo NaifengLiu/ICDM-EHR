@@ -171,6 +171,8 @@ def main(method):
 
     matching_keys = matching.keys()
 
+    get_patient_features()
+
     x_train_file_names_positive = []
     x_test_file_names_positive = []
 
@@ -180,6 +182,16 @@ def main(method):
                 x_train_file_names_positive.append(matching_keys[i])
             else:
                 x_test_file_names_positive.append((matching_keys[i]))
+
+    a = 0
+    b = 0
+
+    for item in patient_feature_after_extraction.keys():
+        if item in matching_keys:
+            a += 1
+        else:
+            b += 1
+    print a, b
 
     # edited
     x_train_file_names_negative = []
@@ -191,8 +203,6 @@ def main(method):
         for item in x_test_file_names_positive:
             x_test_file_names_negative.append(matching[item][i])
     # edited
-
-    get_patient_features()
 
     patient_matrix = patient_feature_after_extraction
 
