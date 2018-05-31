@@ -176,6 +176,9 @@ def main(method):
     x_train_file_names_positive = []
     x_test_file_names_positive = []
 
+    print patient_feature_after_extraction.keys()[0:10]
+    print matching_keys[0:10]
+
     for i in range(len(matching_keys)):
         if i not in missing:
             if len(x_train_file_names_positive) < 985:
