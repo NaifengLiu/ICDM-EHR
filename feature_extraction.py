@@ -39,26 +39,6 @@ def get_ranked_event(file_path):
     return event_set
 
 
-people_1 = []
-people_2 = []
-with open("./data/combined") as f:
-    for line in f.readlines():
-        split = line.split(",")
-        people_1.append(split[0])
-with open("./data/combined_filtered") as f:
-    for line in f.readlines():
-        split = line.split(",")
-        people_2.append(split[0])
-people_1 = list(set(people_1))
-people_2 = list(set(people_2))
-
-invalid_people = list(set(people_1) - set(people_2))
-print invalid_people
-print len(people_1)
-print len(people_2)
-print len(invalid_people)
-
-
 # hae_events = get_ranked_event("./data/hae.csv")
 # non_hae_events = get_ranked_event("./data/nonhae_sorted.csv")
 #
@@ -206,16 +186,10 @@ def main(method):
     test_matrix = []
     for name in x_test_file_names_positive:
         # test_matrix.append(np.loadtxt("./data/x_test_positive/" + name))
-        if name in patient_matrix:
-            # print patient_matrix[name].shape
-            # print patient_feature_after_extraction[name].shape
-            test_matrix.append(patient_matrix[name])
-
-            print patient_matrix[name].shape
+        test_matrix.append(patient_matrix[name])
     for name in x_test_file_names_negative:
-        # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
-        if name in patient_matrix:
-            test_matrix.append(patient_matrix[name])
+        test_matrix.append(patient_matrix[name])
+
     test_matrix = np.array(test_matrix)
     test_matrix = test_matrix.reshape(test_matrix.shape[0], 3767, 2038, 1)
 
