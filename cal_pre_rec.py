@@ -22,13 +22,13 @@ def cal_per_result_cnn():
     return a, b, d, c
 
 
-def cal_per_result_rf(method):
+def cal_per_result_rf():
     a = 0
     b = 0
     c = 0
     d = 0
     for num in range(5):
-        x = np.loadtxt("./result/" + method + "/t" + str(num))
+        x = np.loadtxt("./result/random_forest/t" + str(num))
         for i in range(len(x[:, 0])):
             if i < 204:
                 if x[:, 0][i] >= 0.5:
