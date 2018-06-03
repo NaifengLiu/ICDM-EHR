@@ -40,7 +40,7 @@ def cal_per_result_rf():
                     d += 1
                 else:
                     c += 1
-    return a, b, d, c
+    return a, b, c, d
 
 
 print cal_per_result_cnn()
