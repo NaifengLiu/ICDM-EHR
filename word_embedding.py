@@ -186,8 +186,8 @@ def random_forest(x_train, validation_set, test_set):
     clf = RandomForestClassifier()
     clf.fit(x_train_reshape, y_train)
 
-    validation_output = clf.predict(validation_set_reshape)
-    test_output = clf.predict(test_set_reshape)
+    validation_output = clf.predict_proba(validation_set_reshape)
+    test_output = clf.predict_proba(test_set_reshape)
     return validation_output, test_output
 
 
@@ -212,8 +212,8 @@ def logistic_regression(x_train, validation_set, test_set):
     logistic = LogisticRegression()
     logistic.fit(x_train_reshape, y_train)
 
-    validation_output = logistic.predict(validation_set_reshape)
-    test_output = logistic.predict(test_set_reshape)
+    validation_output = logistic.predict_proba(validation_set_reshape)
+    test_output = logistic.predict_proba(test_set_reshape)
     return validation_output, test_output
 
 
@@ -300,4 +300,5 @@ def main(method):
         count += 1
 
 
+main("random_forest")
 main("lr")
