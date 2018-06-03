@@ -10,6 +10,7 @@ import random
 from tqdm import tqdm
 import grouping
 import process_raw_data
+from sklearn.linear_model import LogisticRegression
 
 # load w2v model
 embedding_model = word2vec.Word2Vec.load("./data/50features_1minwords_10context")
@@ -190,6 +191,32 @@ def random_forest(x_train, validation_set, test_set):
     return validation_output, test_output
 
 
+def logistic_regression(x_train, validation_set, test_set):
+    y_train = np.concatenate((np.zeros(788) + 1, np.zeros(788)), axis=0)
+    x_train = np.array(x_train)
+
+    print(x_train.shape)
+    print(y_train.shape)
+
+    nsamples, nx, ny, nz = x_train.shape
+    x_train_reshape = x_train.reshape((nsamples, nx * ny * nz))
+
+    nsamples, nx, ny, nz = validation_set.shape
+    validation_set_reshape = validation_set.reshape((nsamples, nx * ny * nz))
+
+    nsamples, nx, ny, nz = test_set.shape
+    test_set_reshape = test_set.reshape((nsamples, nx * ny * nz))
+
+    print(x_train_reshape.shape)
+
+    logistic = LogisticRegression()
+    logistic.fit(x_train_reshape, y_train)
+
+    validation_output = logistic.predict(validation_set_reshape)
+    test_output = logistic.predict(test_set_reshape)
+    return validation_output, test_output
+
+
 def main(method):
 
     print("start pre-processing")
@@ -265,9 +292,12 @@ def main(method):
             v_output, t_output = random_forest(tmp_training, validation_matrix, test_matrix)
             np.savetxt("./result/random_forest/v" + str(count), v_output)
             np.savetxt("./result/random_forest/t" + str(count), t_output)
+        elif method == "lr":
+            v_output, t_output = logistic_regression(tmp_training, validation_matrix, test_matrix)
+            np.savetxt("./result/lr/v" + str(count), v_output)
+            np.savetxt("./result/lr/t" + str(count), t_output)
 
         count += 1
 
 
-# main("cnn")
-main("random_forest")
+main("lr")
