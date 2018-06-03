@@ -29,14 +29,14 @@ def cal_per_result_rf():
     d = 0
     for num in range(5):
         x = np.loadtxt("./result/random_forest/t" + str(num))
-        for i in range(len(x[:, 0])):
+        for i in range(len(x)):
             if i < 204:
-                if x[:, 0][i] >= 0.5:
+                if x[i] >= 0.5:
                     a += 1
                 else:
                     b += 1
             else:
-                if x[:, 0][i] >= 0.5:
+                if x[i] >= 0.5:
                     d += 1
                 else:
                     c += 1
