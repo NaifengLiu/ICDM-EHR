@@ -29,6 +29,7 @@ def cal_per_result_other(method):
     d = 0
     for num in range(5):
         x = np.loadtxt("./result/"+method+"/t" + str(num))
+        print x.shape
         for i in range(len(x)):
             if i < 204:
                 if x[i] >= 0.5:
