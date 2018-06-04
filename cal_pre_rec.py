@@ -47,7 +47,7 @@ def cal_pre_rec(method, v_or_t):
             if tmp[i] < 204:
                 precision += 1
             if precision >= 204/20*(len(tag) + 1):
-                tag.append(float(precision) / float(i) * 100)
+                tag.append(round(float(precision) / float(i) * 100, 2))
         print tag
 
 
