@@ -37,7 +37,7 @@ print np.argsort(-q)
 
 
 def cal_pre_rec(method, v_or_t):
-    for num in range(5):
+    for num in range(1):
         precision = 0
         recall = 0
         tag = []
