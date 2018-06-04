@@ -51,5 +51,5 @@ def cal_pre_rec(method, v_or_t):
         print tag
 
 
-cal_pre_rec("cnn", "v")
+cal_pre_rec("lr", "t")
 
