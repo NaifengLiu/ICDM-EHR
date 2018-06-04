@@ -44,6 +44,7 @@ def cal_pre_rec(method, v_or_t):
         x = np.loadtxt("./result/" + method + "/" + v_or_t + str(num))
         tmp = np.argsort(-x[:, 1])
         print tmp[0:20]
+        print x[tmp[0:20]]
         for i in range(len(tmp)):
             if tmp[i] < 204:
                 precision += 1
