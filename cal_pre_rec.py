@@ -20,7 +20,7 @@ def cal_per_result_over_all(method, v_or_t):
                 else:
                     c += 1
     print method
-    print "TP: ", a, "FP: ", b, "FN: ", d, "TN: ", c
+    print "TP: ", a, "FN: ", b, "FP: ", d, "TN: ", c
 
 
 # cal_per_result_over_all("cnn", "v")
