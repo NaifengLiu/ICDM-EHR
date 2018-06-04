@@ -19,6 +19,7 @@ def cal_per_result_over_all(method):
                     d += 1
                 else:
                     c += 1
+    print method
     print "TP: ", a, "FP: ", b, "FN: ", d, "TN: ", c
 
 
