@@ -43,8 +43,8 @@ def cal_pre_rec(method, v_or_t):
         tag = []
         x = np.loadtxt("./result/" + method + "/" + v_or_t + str(num))
         tmp = np.argsort(-x[:, 1])
-        print tmp[0:20]
-        print x[tmp[0:20]]
+        # print tmp[0:20]
+        # print x[tmp[0:20]]
         for i in range(len(tmp)):
             if tmp[i] < 204:
                 precision += 1
@@ -53,5 +53,6 @@ def cal_pre_rec(method, v_or_t):
         print tag
 
 
+cal_pre_rec("cnn", "t")
+cal_pre_rec("random_forest", "t")
 cal_pre_rec("lr", "t")
-
