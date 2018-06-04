@@ -30,14 +30,14 @@ def cal_per_result_other(method):
     for num in range(5):
         x = np.loadtxt("./result/"+method+"/t" + str(num))
         print x.shape
-        for i in range(len(x)):
+        for i in range(len(x[:, 1])):
             if i < 204:
-                if x[i] >= 0.5:
+                if x[:, 1][i] >= 0.5:
                     a += 1
                 else:
                     b += 1
             else:
-                if x[i] >= 0.5:
+                if x[:, 1][i] >= 0.5:
                     d += 1
                 else:
                     c += 1
