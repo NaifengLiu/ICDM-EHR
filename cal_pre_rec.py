@@ -20,3 +20,8 @@ def cal_per_result_over_all(method):
                 else:
                     c += 1
     return a, b, d, c
+
+
+cal_per_result_over_all("cnn")
+cal_per_result_over_all("random_forest")
+cal_per_result_over_all("lr")
