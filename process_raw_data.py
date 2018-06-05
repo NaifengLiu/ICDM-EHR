@@ -4,7 +4,7 @@ import random
 from tqdm import tqdm
 
 embedding_model = word2vec.Word2Vec.load(
-    "./data/50features_1minwords_10context")
+    "./data/model_without_feature_selection")
 
 positive = []
 negative = []
@@ -124,7 +124,9 @@ def get_training_data(positive_sample_num, negative_sample_num):
     # print all_patient_weight.shape
     return all_patient_weight, hae_patient, non_hae_patient
 
+
 patient_matrix = dict()
+
 
 for i in tqdm(range(len(total))):
     patient_id = total[i]

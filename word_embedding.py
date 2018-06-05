@@ -5,16 +5,10 @@ from keras.layers import Conv2D, Conv1D, MaxPooling2D, MaxPooling1D
 import keras
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
-from gensim.models import word2vec
 import random
-from tqdm import tqdm
 import grouping
 import process_raw_data
 from sklearn.linear_model import LogisticRegression
-
-# load w2v model
-embedding_model = word2vec.Word2Vec.load("./data/50features_1minwords_10context")
-
 
 # prove it works
 # print(embedding_model['V2389'])
@@ -279,26 +273,28 @@ def main(method):
         validation_matrix = validation_matrix.reshape(validation_matrix.shape[0], 292, 50, 1)
 
         print("preparing training matrix")
-        tmp_training = []
-        for name in tmp_training_names_positive:
-            tmp_training.append(patient_matrix[name])
-        for name in tmp_training_names_positive:
-            tmp_training.append(patient_matrix[random.choice(matching[name])])
-        if method == "cnn":
-            v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix, epochs=10)
-            np.savetxt("./result/cnn/v" + str(count), v_output)
-            np.savetxt("./result/cnn/t" + str(count), t_output)
-        elif method == "random_forest":
-            v_output, t_output = random_forest(tmp_training, validation_matrix, test_matrix)
-            np.savetxt("./result/random_forest/v" + str(count), v_output)
-            np.savetxt("./result/random_forest/t" + str(count), t_output)
-        elif method == "lr":
-            v_output, t_output = logistic_regression(tmp_training, validation_matrix, test_matrix)
-            np.savetxt("./result/lr/v" + str(count), v_output)
-            np.savetxt("./result/lr/t" + str(count), t_output)
+        for time in range(200):
+            tmp_training = []
+            for name in tmp_training_names_positive:
+                tmp_training.append(patient_matrix[name])
+            for name in tmp_training_names_positive:
+                tmp_training.append(patient_matrix[matching[name][time]])
+            if method == "cnn":
+                v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix, epochs=10)
+                np.savetxt("./result/cnn/v" + str(count), v_output)
+                np.savetxt("./result/cnn/t" + str(count), t_output)
+            elif method == "random_forest":
+                v_output, t_output = random_forest(tmp_training, validation_matrix, test_matrix)
+                np.savetxt("./result/random_forest/v" + str(count), v_output)
+                np.savetxt("./result/random_forest/t" + str(count), t_output)
+            elif method == "lr":
+                v_output, t_output = logistic_regression(tmp_training, validation_matrix, test_matrix)
+                np.savetxt("./result/lr/v" + str(count), v_output)
+                np.savetxt("./result/lr/t" + str(count), t_output)
 
         count += 1
 
 
+main("cnn")
 main("random_forest")
 main("lr")
