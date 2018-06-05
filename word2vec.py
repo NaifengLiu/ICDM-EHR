@@ -64,7 +64,7 @@ if __name__ == '__main__':
     # combine_together("nonhae_dx.csv")
     # combine_together("nonhae_rx.csv")
     combine_together("./data/nonhae_sorted_feature_extraction")
-    combine_together("../data/hae_feature_extraction")
+    combine_together("./data/hae_feature_extraction")
 
     # build word2vec model
     vocabulary, vocabulary_inv = build_vocab(dic_words)
