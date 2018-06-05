@@ -238,22 +238,19 @@ def main_without_feature_selection(method):
         for item in x_test_file_names_positive:
             x_test_file_names_negative.append(matching[item][i])
     # edited
+
+    print(x_test_file_names_positive[0:10])
+
     import process_raw_data_without_feature_selection
     patient_matrix = process_raw_data_without_feature_selection.patient_matrix
 
     test_matrix = []
     for name in x_test_file_names_positive:
         # test_matrix.append(np.loadtxt("./data/x_test_positive/" + name))
-        if name in patient_matrix:
-            test_matrix.append(patient_matrix[name])
-        else:
-            test_matrix.append(np.zeros((292, 50)))
+        test_matrix.append(patient_matrix[name])
     for name in x_test_file_names_negative:
         # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
-        if name in patient_matrix:
-            test_matrix.append(patient_matrix[name])
-        else:
-            test_matrix.append(np.zeros((292, 50)))
+        test_matrix.append(patient_matrix[name])
     test_matrix = np.array(test_matrix)
     test_matrix = test_matrix.reshape(test_matrix.shape[0], 292, 50, 1)
 
@@ -268,15 +265,9 @@ def main_without_feature_selection(method):
         print("preparing validation matrix")
         validation_matrix = []
         for name in tmp_validation_names_positive:
-            if name in patient_matrix:
-                validation_matrix.append(patient_matrix[name])
-            else:
-                validation_matrix.append(np.zeros((292, 50)))
+            validation_matrix.append(patient_matrix[name])
         for name in tmp_validation_names_negative:
-            if name in patient_matrix:
-                validation_matrix.append(patient_matrix[name])
-            else:
-                validation_matrix.append(np.zeros((292, 50)))
+            validation_matrix.append(patient_matrix[name])
         validation_matrix = np.array(validation_matrix)
         validation_matrix = validation_matrix.reshape(validation_matrix.shape[0], 292, 50, 1)
 
@@ -284,15 +275,9 @@ def main_without_feature_selection(method):
         for time in range(200):
             tmp_training = []
             for name in tmp_training_names_positive:
-                if name in patient_matrix:
-                    tmp_training.append(patient_matrix[name])
-                else:
-                    tmp_training.append(np.zeros((292, 50)))
+                tmp_training.append(patient_matrix[name])
             for name in tmp_training_names_positive:
-                if matching[name][time] in patient_matrix:
-                    tmp_training.append(patient_matrix[matching[name][time]])
-                else:
-                    tmp_training.append(np.zeros((292, 50)))
+                tmp_training.append(patient_matrix[matching[name][time]])
             if method == "cnn":
                 v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix, epochs=10)
                 np.savetxt("./result/without_feature_selection/cnn/v" + str(count), v_output)
