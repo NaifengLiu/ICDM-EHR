@@ -5,9 +5,9 @@ from keras.layers import Conv2D, Conv1D, MaxPooling2D, MaxPooling1D
 import keras
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
-import random
 import grouping
-import process_raw_data
+
+
 from sklearn.linear_model import LogisticRegression
 
 # prove it works
@@ -34,10 +34,6 @@ from sklearn.linear_model import LogisticRegression
 # x_train = x_train.reshape(x_train.shape[0], 292, 50, 1)
 # y_train = np.concatenate((np.zeros(800) + 1, np.zeros(800)), axis=0)
 # y_train = keras.utils.to_categorical(y_train, num_classes)
-
-
-def toInt(string):
-    return int(float(string))
 
 
 def cnn(x_train, validation_set, test_set, batch_size=32, epochs=7, num_classes=2, input_shape=(292, 50, 1)):
@@ -211,7 +207,7 @@ def logistic_regression(x_train, validation_set, test_set):
     return validation_output, test_output
 
 
-def main(method):
+def main_without_feature_selection(method):
 
     print("start pre-processing")
 
@@ -242,8 +238,8 @@ def main(method):
         for item in x_test_file_names_positive:
             x_test_file_names_negative.append(matching[item][i])
     # edited
-
-    patient_matrix = process_raw_data.patient_matrix
+    import process_raw_data_without_feature_selection
+    patient_matrix = process_raw_data_without_feature_selection.patient_matrix
 
     test_matrix = []
     for name in x_test_file_names_positive:
@@ -281,20 +277,104 @@ def main(method):
                 tmp_training.append(patient_matrix[matching[name][time]])
             if method == "cnn":
                 v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix, epochs=10)
-                np.savetxt("./result/cnn/v" + str(count), v_output)
-                np.savetxt("./result/cnn/t" + str(count), t_output)
+                np.savetxt("./result/without_feature_selection/cnn/v" + str(count), v_output)
+                np.savetxt("./result/without_feature_selection/cnn/t" + str(count), t_output)
             elif method == "random_forest":
                 v_output, t_output = random_forest(tmp_training, validation_matrix, test_matrix)
-                np.savetxt("./result/random_forest/v" + str(count), v_output)
-                np.savetxt("./result/random_forest/t" + str(count), t_output)
+                np.savetxt("./result/without_feature_selection/random_forest/v" + str(count), v_output)
+                np.savetxt("./result/without_feature_selection/random_forest/t" + str(count), t_output)
             elif method == "lr":
                 v_output, t_output = logistic_regression(tmp_training, validation_matrix, test_matrix)
-                np.savetxt("./result/lr/v" + str(count), v_output)
-                np.savetxt("./result/lr/t" + str(count), t_output)
+                np.savetxt("./result/without_feature_selection/lr/v" + str(count), v_output)
+                np.savetxt("./result/without_feature_selection/lr/t" + str(count), t_output)
 
         count += 1
 
 
-main("cnn")
-main("random_forest")
-main("lr")
+def main_without_feature_selection(method):
+
+    print("start pre-processing")
+
+    matching = grouping.matching
+    missing = [1, 3, 8, 72, 165, 183, 223, 239, 285, 305, 324, 348, 376, 416, 446, 461, 486, 489, 548, 575, 599, 612,
+               632, 682, 683, 718, 721, 757, 777, 792, 799, 816, 819, 998, 1023, 1034, 1075, 1080, 1118, 1123, 1132,
+               1146, 1166, 1215]
+
+    matching_keys = matching.keys()
+
+    x_train_file_names_positive = []
+    x_test_file_names_positive = []
+
+    for i in range(len(matching_keys)):
+        if i not in missing:
+            if len(x_train_file_names_positive) < 985:
+                x_train_file_names_positive.append(matching_keys[i])
+            else:
+                x_test_file_names_positive.append((matching_keys[i]))
+
+    # edited
+    x_train_file_names_negative = []
+    for i in range(200):
+        for item in x_train_file_names_positive:
+            x_train_file_names_negative.append(matching[item][i])
+    x_test_file_names_negative = []
+    for i in range(200):
+        for item in x_test_file_names_positive:
+            x_test_file_names_negative.append(matching[item][i])
+    # edited
+    import process_raw_data_with_feature_selection
+    patient_matrix = process_raw_data_with_feature_selection.patient_matrix
+
+    test_matrix = []
+    for name in x_test_file_names_positive:
+        # test_matrix.append(np.loadtxt("./data/x_test_positive/" + name))
+        test_matrix.append(patient_matrix[name])
+    for name in x_test_file_names_negative:
+        # test_matrix.append(np.loadtxt("./data/x_test_negative/" + name))
+        test_matrix.append(patient_matrix[name])
+    test_matrix = np.array(test_matrix)
+    test_matrix = test_matrix.reshape(test_matrix.shape[0], 292, 50, 1)
+
+    count = 0
+    for fold_num in range(5):
+        print("start " + str(fold_num + 1) + " fold")
+        tmp_validation_names_positive = x_train_file_names_positive[fold_num * 197:(fold_num + 1) * 197]
+        tmp_validation_names_negative = x_train_file_names_negative[fold_num * 39400:(fold_num + 1) * 39400]
+        tmp_training_names_positive = \
+            [item for item in x_train_file_names_positive if item not in tmp_validation_names_positive]
+
+        print("preparing validation matrix")
+        validation_matrix = []
+        for name in tmp_validation_names_positive:
+            validation_matrix.append(patient_matrix[name])
+        for name in tmp_validation_names_negative:
+            validation_matrix.append(patient_matrix[name])
+        validation_matrix = np.array(validation_matrix)
+        validation_matrix = validation_matrix.reshape(validation_matrix.shape[0], 292, 50, 1)
+
+        print("preparing training matrix")
+        for time in range(200):
+            tmp_training = []
+            for name in tmp_training_names_positive:
+                tmp_training.append(patient_matrix[name])
+            for name in tmp_training_names_positive:
+                tmp_training.append(patient_matrix[matching[name][time]])
+            if method == "cnn":
+                v_output, t_output = cnn(tmp_training, validation_matrix, test_matrix, epochs=10)
+                np.savetxt("./result/with_feature_selection/cnn/v" + str(count), v_output)
+                np.savetxt("./result/with_feature_selection/cnn/t" + str(count), t_output)
+            elif method == "random_forest":
+                v_output, t_output = random_forest(tmp_training, validation_matrix, test_matrix)
+                np.savetxt("./result/with_feature_selection/random_forest/v" + str(count), v_output)
+                np.savetxt("./result/with_feature_selection/random_forest/t" + str(count), t_output)
+            elif method == "lr":
+                v_output, t_output = logistic_regression(tmp_training, validation_matrix, test_matrix)
+                np.savetxt("./result/with_feature_selection/lr/v" + str(count), v_output)
+                np.savetxt("./result/with_feature_selection/lr/t" + str(count), t_output)
+
+        count += 1
+
+
+main_without_feature_selection("cnn")
+main_without_feature_selection("random_forest")
+main_without_feature_selection("lr")

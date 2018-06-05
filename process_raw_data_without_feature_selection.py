@@ -158,4 +158,4 @@ for i in tqdm(range(len(total))):
 #     person = x_test_negative[i]
 #     np.savetxt("./data/x_test_negative/"+str(person), fill_patient_matrix(person))
 
-print "done loading process_raw_data.py"
+print "done loading process_raw_data_without_feature_selection.py"
