@@ -294,7 +294,7 @@ def main_without_feature_selection(method):
         count += 1
 
 
-def main_without_feature_selection(method):
+def main_with_feature_selection(method):
 
     print("start pre-processing")
 
