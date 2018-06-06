@@ -291,7 +291,7 @@ def main_without_feature_selection(method):
                 np.savetxt("./result/without_feature_selection/lr/v" + str(count), v_output)
                 np.savetxt("./result/without_feature_selection/lr/t" + str(count), t_output)
 
-        count += 1
+            count += 1
 
 
 def main_with_feature_selection(method):
